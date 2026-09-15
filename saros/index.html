@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Laboratorio matemático del Saros</title>
+  <meta name="description" content="Explorador visual y matemático de las series Saros solares">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><a class="brand" href="#top"><span class="orbit"><i></i></span><b>SAROS<small>laboratorio de eclipses</small></b></a><nav aria-label="Navegación principal"><a href="../">← Cuaderno</a><a href="#cielo">El cielo</a><a href="#atlas">Atlas</a><a href="#math">Matemáticas</a><a href="#gamma">Evolución</a></nav></header>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy"><p class="kicker">ASTRONOMÍA · GEOMETRÍA · TIEMPO</p><h1>La sombra que vuelve.<br><em>Pero nunca al mismo lugar.</em></h1><p class="lead">Recorre una familia de eclipses y abre, capa por capa, la geometría que esconde el ciclo de Saros.</p></div>
+      <form id="search"><label for="number">Elige una familia de eclipses</label><div><span>Saros</span><input id="number" value="126" inputmode="numeric" aria-describedby="numberHint"><button>Explorar →</button></div><small id="numberHint">Series solares de 0 a 180</small></form>
+    </section>
+
+    <nav class="contents" aria-label="Índice de contenidos">
+      <p><span>RECORRIDO</span> Una historia en cuatro escalas</p>
+      <a href="#cielo"><b>01</b><span>El cielo de Saros<small>Qué se repite ahí arriba</small></span></a>
+      <a href="#atlas"><b>02</b><span>Atlas de la familia<small>Eclipses, mapas y datos</small></span></a>
+      <a href="#math"><b>03</b><span>Las matemáticas<small>Periodos, sombra y Tierra</small></span></a>
+      <a href="#gamma"><b>04</b><span>La huella de gamma<small>Cómo nace y muere una serie</small></span></a>
+    </nav>
+
+    <section class="sky" id="cielo">
+      <div class="sky-heading"><p class="chapter">ANTES DEL MAPA</p><h2>El cielo de Saros.</h2></div>
+      <div class="sky-story">
+        <p class="sky-lead">Un Saros no es un eclipse que regresa: es una <b>familia</b> de eclipses separados por 18 años, 11 días y unas 8 horas.</p>
+        <div class="sky-steps">
+          <article><span>01</span><h3>La fase vuelve</h3><p>Tras 223 meses sinódicos, la Luna vuelve a ser nueva y puede ocultar al Sol.</p></article>
+          <article><span>02</span><h3>El nodo vuelve</h3><p>Tras 242 meses draconíticos, cruza casi el mismo punto donde su órbita corta la eclíptica.</p></article>
+          <article><span>03</span><h3>La distancia vuelve</h3><p>Tras 239 meses anomalísticos, su tamaño aparente vuelve a ser muy parecido.</p></article>
+        </div>
+        <p class="sky-result">La alineación se repite en el cielo, pero las ocho horas sobrantes hacen girar la Tierra bajo la sombra. Por eso el siguiente eclipse de la familia aparece unos <b>120° más al oeste</b>.</p>
+      </div>
+    </section>
+
+    <section class="atlas" id="atlas">
+      <div class="atlas-intro"><div><p class="chapter">LA FAMILIA ELEGIDA</p><h2>Atlas del Saros</h2></div><p>Cada marca de color es un eclipse de la misma familia. Avanza por la secuencia para ver cómo la sombra atraviesa la Tierra de un polo al otro.</p></div>
+      <div id="loading" class="loading" role="status"><span class="loader" aria-hidden="true"></span><span>Abriendo el atlas…</span></div><div id="error" class="error" hidden></div><div id="app" hidden>
+      <div class="series"><div><small>SERIE</small><b id="seriesNumber"></b></div><div><small>VIDA COMPLETA</small><b id="seriesDuration"></b></div><div><small>SECUENCIA</small><b id="seriesSequence"></b></div><div><small>NODO</small><b id="seriesNode"></b></div></div>
+      <div class="atlas-grid"><article class="map-card"><div class="map-title"><div><small id="counter"></small><h2 id="date"></h2></div><span id="typeBadge" class="badge"></span></div><div class="map"><img id="mapImage" alt="Mapa global del eclipse"></div><div class="controls"><button id="prev" aria-label="Anterior">←</button><button id="play" aria-label="Reproducir">▶</button><div id="timeline" class="timeline"></div><button id="next" aria-label="Siguiente">→</button></div><div id="legend" class="legend"></div></article>
+      <aside class="facts"><p class="label">EN EL MÁXIMO DEL ECLIPSE</p><dl><div><dt>Tipo</dt><dd id="factType"></dd></div><div><dt>Magnitud</dt><dd id="factMagnitude"></dd></div><div><dt>Gamma, γ</dt><dd id="factGamma"></dd></div><div><dt>Duración central</dt><dd id="factDuration"></dd></div><div><dt>Anchura</dt><dd id="factWidth"></dd></div><div><dt>Máximo geográfico</dt><dd id="factLocation"></dd></div></dl><div class="note"><small>QUÉ SIGNIFICA γ</small><p id="gammaReading"></p></div><button id="exeligmos">Saltar un exeligmos <span>+3 eclipses · ≈54 años</span></button></aside></div>
+      <p id="atlasWarning" class="warning" hidden></p>
+    </div></section>
+
+    <section class="math" id="math"><div class="section-head"><p class="chapter">LAS MATEMÁTICAS DEL SAROS</p><h2>De tres meses lunares<br>a una franja sobre la Tierra.</h2><p>No hace falta aceptar el ciclo como una regla memorizada. Se puede reconstruir con periodos, semejanza de triángulos y geometría sobre un elipsoide.</p></div>
+      <div class="tabs" role="tablist"><button class="active" data-tab="clocks">1 · Tres relojes</button><button data-tab="longitude">2 · Los 120°</button><button data-tab="shadow">3 · Conos de sombra</button><button data-tab="bessel">4 · Tierra y Bessel</button></div>
+      <div class="lesson active" id="clocks"><div class="lesson-copy"><p class="chapter">01 · LA COINCIDENCIA</p><h3>La Luna debe volver a tres condiciones a la vez.</h3><p><b>Fase:</b> el mes sinódico devuelve la Luna nueva. <b>Nodo:</b> el draconítico la devuelve al plano de la órbita terrestre. <b>Distancia:</b> el anomalístico la devuelve aproximadamente al mismo tamaño aparente.</p><div class="formula"><span>223 S</span><i>≈</i><span>242 D</span><i>≈</i><span>239 A</span><strong>≈ 6585,3 días</strong></div></div><div class="clock-bars" id="clockBars"></div></div>
+      <div class="lesson" id="longitude"><div class="lesson-copy"><p class="chapter">02 · LA TIERRA SIGUE GIRANDO</p><h3>La fracción de día mueve el eclipse hacia el oeste.</h3><p>Un Saros no contiene un número entero de días. Cuando Sol, Luna y nodo vuelven a alinearse, la Tierra ha rotado aproximadamente un tercio de vuelta adicional.</p><div class="big-formula"><span>0,3213 días × 360°</span><b>= 115,7°</b><small>desplazamiento aproximado hacia el oeste</small></div></div><div class="earth-dial"><div class="earth"><span>1</span><span>2</span><span>3</span><i></i></div><p>Tres Saros forman un <b>exeligmos</b>: 347° de rotación adicional, casi una vuelta completa.</p></div></div>
+      <div class="lesson" id="shadow"><div class="lesson-copy"><p class="chapter">03 · SEMEJANZA DE TRIÁNGULOS</p><h3>El tamaño aparente decide entre total y anular.</h3><p>Los radios angulares dependen del radio físico y de la distancia al observador. El cono de umbra termina donde los bordes aparentes de Sol y Luna coinciden.</p><div class="formula-stack"><code>α☉ = arctan(R☉ / d☉)</code><code>α☾ = arctan(R☾ / d☾)</code><code>Lᵤ = d☉☾ · R☾ / (R☉ − R☾)</code></div><div id="typeRule" class="type-rule"></div></div><div class="shadow-diagram"><svg viewBox="0 0 700 330" role="img" aria-label="Conos de umbra y penumbra"><circle cx="85" cy="165" r="78" class="sun"/><circle cx="360" cy="165" r="24" class="moon"/><circle cx="630" cy="165" r="58" class="earth-svg"/><path d="M85 87 L360 141 L630 223" class="penumbra"/><path d="M85 243 L360 189 L630 107" class="penumbra"/><path d="M85 87 L360 189 L535 165" class="umbra"/><path d="M85 243 L360 141 L535 165" class="umbra"/><text x="63" y="282">Sol</text><text x="333" y="218">Luna</text><text x="603" y="245">Tierra</text><text x="440" y="145">umbra</text></svg></div></div>
+      <div class="lesson" id="bessel"><div class="lesson-copy"><p class="chapter">04 · DEL ESPACIO AL MAPA</p><h3>Los elementos besselianos convierten el cono en una trayectoria.</h3><p>Se usa un plano fundamental perpendicular al eje de la sombra. Sus coordenadas se aproximan con polinomios alrededor del instante de referencia y después se intersectan con la Tierra achatada.</p><div class="formula-stack"><code>x(t) = x₀ + x₁t + x₂t² + x₃t³</code><code>y(t) = y₀ + y₁t + y₂t² + y₃t³</code><code>γ ≈ min √[x(t)² + y(t)²]</code></div><p class="caution">La última relación es una lectura geométrica simplificada de γ; el cálculo preciso incorpora la orientación del eje, los radios de penumbra/umbra y el elipsoide terrestre.</p></div><div class="plane"><div class="plane-grid"><span class="axis-x">x</span><span class="axis-y">y</span><i id="gammaPoint"></i><b id="gammaVector"></b></div><p>El punto naranja representa el eje de la sombra del eclipse seleccionado.</p></div></div>
+    </section>
+
+    <section class="evolution" id="gamma"><div><p class="chapter">LA HUELLA DE UNA FAMILIA</p><h2>Gamma cuenta la historia.</h2><p>La lenta variación de γ desplaza el eje de la sombra desde un polo, a través de la Tierra, hasta el polo opuesto. Selecciona cualquier punto del gráfico para saltar a ese eclipse.</p></div><div class="chart-wrap"><canvas id="gammaChart" width="900" height="360"></canvas><div class="chart-legend"><span>γ = 0 · eje por el centro</span><span>|γ| ≈ 1 · borde terrestre</span></div></div></section>
+  </main>
+  <footer><div><b>SAROS</b><p>Datos y mapas: Fred Espenak, NASA/GSFC. Mapas de Dan McGlaun; elementos besselianos de Jean Meeus.</p></div><div><a href="https://eclipse.gsfc.nasa.gov/SEsaros/SEsaroscat.html" target="_blank" rel="noreferrer">Catálogo de Saros ↗</a><a href="https://eclipse.gsfc.nasa.gov/SEcat5/SEmapkey.html" target="_blank" rel="noreferrer">Cómo leer los mapas ↗</a></div></footer>
+  <script src="app.js"></script>
+</body></html>

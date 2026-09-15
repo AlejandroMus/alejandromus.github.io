@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Laboratorio 3D interactivo de los problemas gravitatorios de dos y tres cuerpos">
+  <title>Órbitas · Laboratorio de dos y tres cuerpos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Órbitas, inicio">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+      <b>ÓRBITAS<small>laboratorio gravitatorio</small></b>
+    </a>
+    <nav aria-label="Navegación principal">
+      <a href="../">← Cuaderno</a>
+      <a href="#dos-cuerpos">Dos cuerpos</a>
+      <a href="#tres-cuerpos">Tres cuerpos</a>
+      <a href="#lagrange">Lagrange y Webb</a>
+      <a href="#mision-l2">Misión L2</a>
+      <a href="#historia">Historia</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">GRAVEDAD · MOVIMIENTO · CAOS</p>
+        <h1>Dos cuerpos obedecen.<br><em>El tercero cambia las reglas.</em></h1>
+        <p class="lead">Toca las masas, separa los mundos y dales un impulso. Aquí las ecuaciones de Newton no se leen: se ponen en marcha.</p>
+        <a class="start" href="#dos-cuerpos">Entrar al laboratorio <span>↓</span></a>
+      </div>
+      <div class="hero-system" aria-hidden="true">
+        <span class="orbit orbit-a"><i></i></span>
+        <span class="orbit orbit-b"><i></i></span>
+        <span class="orbit orbit-c"><i></i></span>
+        <b></b>
+      </div>
+    </section>
+
+    <nav class="contents" aria-label="Índice del laboratorio">
+      <p><span>RECORRIDO</span> De lo predecible a lo sensible</p>
+      <a href="#idea"><b>01</b><span>Una misma ley<small>La regla de la gravedad</small></span></a>
+      <a href="#dos-cuerpos"><b>02</b><span>Dos cuerpos<small>El problema resoluble</small></span></a>
+      <a href="#tres-cuerpos"><b>03</b><span>Tres cuerpos<small>El umbral del caos</small></span></a>
+      <a href="#lagrange"><b>04</b><span>Lagrange y Webb<small>Equilibrio en un marco giratorio</small></span></a>
+      <a href="#historia"><b>05</b><span>Una historia<small>Newton, Lagrange y Poincaré</small></span></a>
+    </nav>
+
+    <section class="idea" id="idea">
+      <div>
+        <p class="chapter">LA REGLA</p>
+        <h2>Una ley.<br>Dos destinos.</h2>
+      </div>
+      <div class="idea-copy">
+        <p class="statement">Cada cuerpo atrae a todos los demás. La fuerza crece con las masas y cae con el cuadrado de la distancia.</p>
+        <div class="equation" aria-label="Fuerza igual a G por masa uno por masa dos dividido entre distancia al cuadrado">
+          <span>F</span><i>=</i><span>G</span><strong>m₁m₂<em>r²</em></strong>
+        </div>
+        <div class="comparison">
+          <article><b>2</b><div><h3>Dos cuerpos</h3><p>El centro de masas permanece quieto o avanza en línea recta. En torno a él aparecen elipses, parábolas o hipérbolas que podemos calcular exactamente.</p></div></article>
+          <article><b>3</b><div><h3>Tres cuerpos</h3><p>La ley sigue siendo determinista, pero el problema general no tiene una solución analítica cerrada y práctica. Hay órbitas periódicas y configuraciones estables; otras regiones son caóticas y amplifican cualquier diferencia diminuta.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="lab-section" id="dos-cuerpos">
+      <div class="section-head">
+        <div><p class="chapter">EXPERIMENTO 01</p><h2>El baile de dos cuerpos.</h2></div>
+        <p>Ambos astros orbitan su centro de masas común. Cambia la relación de masas, la separación y la velocidad transversal: por debajo de la velocidad circular la órbita se alarga; por encima puede abrirse y escapar.</p>
+      </div>
+
+      <div class="simulator" data-simulation="two">
+        <div class="viewport">
+          <canvas width="1100" height="680" aria-label="Simulación tridimensional del problema de dos cuerpos"></canvas>
+          <div class="viewport-top">
+            <span class="live"><i></i> SIMULACIÓN NEWTONIANA</span>
+            <span class="sim-time">t = 0,0</span>
+          </div>
+          <div class="viewport-bottom">
+            <span>Arrastra para rotar · rueda para acercar</span>
+            <button type="button" data-action="trails" aria-pressed="true">Trazas: sí</button>
+          </div>
+        </div>
+        <aside class="control-panel">
+          <div class="panel-head"><p>CONDICIONES INICIALES</p><span class="status" role="status">Órbita ligada</span></div>
+          <div class="presets" aria-label="Escenarios de dos cuerpos">
+            <button type="button" class="active" data-preset="circular">Circular</button>
+            <button type="button" data-preset="eccentric">Excéntrica</button>
+            <button type="button" data-preset="escape">Escape</button>
+          </div>
+          <div class="controls-list">
+            <label>Masa primaria <output data-output="mass1">2,00</output><input data-param="mass1" type="range" min="0.2" max="5" value="2" step="0.05"></label>
+            <label>Masa secundaria <output data-output="mass2">0,60</output><input data-param="mass2" type="range" min="0.05" max="3" value="0.6" step="0.05"></label>
+            <label>Distancia inicial <output data-output="distance">6,0</output><input data-param="distance" type="range" min="2" max="12" value="6" step="0.1"></label>
+            <label>Velocidad inicial <output data-output="speed">1,00 × v<sub>circ</sub></output><input data-param="speed" type="range" min="0.25" max="1.65" value="1" step="0.01"></label>
+            <label>Inclinación orbital <output data-output="inclination">22°</output><input data-param="inclination" type="range" min="0" max="80" value="22" step="1"></label>
+          </div>
+          <div class="readouts">
+            <div><small>ENERGÍA TOTAL</small><b data-readout="energy">—</b></div>
+            <div><small>SEPARACIÓN</small><b data-readout="separation">—</b></div>
+          </div>
+          <label class="playback-control">Velocidad de reproducción<select data-playback aria-label="Velocidad de la simulación"><option value="0.25">¼×</option><option value="0.5">½×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option><option value="16">16×</option><option value="32">32×</option></select></label>
+          <div class="sim-actions">
+            <button type="button" data-action="play"><span>Ⅱ</span> Pausar</button>
+            <button type="button" data-action="reset">↺ Reiniciar</button>
+          </div>
+          <p class="units">Unidades normalizadas: G = 1. La forma de la órbita es físicamente fiel; el tamaño y el tiempo no representan un sistema astronómico concreto.</p>
+        </aside>
+      </div>
+
+      <div class="after-lab">
+        <div><p class="chapter">QUÉ OBSERVAR</p><h3>La velocidad decide la curva.</h3></div>
+        <div class="orbit-outcomes"><span><i></i><b>Lenta</b> caída o elipse muy excéntrica</span><span><i></i><b>Circular</b> equilibrio entre caída y avance</span><span><i></i><b>Rápida</b> hipérbola y escape</span></div>
+      </div>
+    </section>
+
+    <section class="lab-section three" id="tres-cuerpos">
+      <div class="section-head">
+        <div><p class="chapter">EXPERIMENTO 02</p><h2>Cuando llega el tercero.</h2></div>
+        <p>No es azar: las mismas condiciones producen siempre el mismo resultado. Pero el sistema es tan sensible que una variación casi invisible puede intercambiar parejas, expulsar un cuerpo o destruir una figura inicialmente estable.</p>
+      </div>
+
+      <div class="simulator with-phase" data-simulation="three">
+        <div class="viewport">
+          <canvas width="1100" height="680" aria-label="Simulación tridimensional del problema de tres cuerpos"></canvas>
+          <div class="viewport-top">
+            <span class="live"><i></i> INTEGRACIÓN NUMÉRICA 3D</span>
+            <span class="sim-time">t = 0,0</span>
+          </div>
+          <div class="viewport-bottom">
+            <span>Arrastra para rotar · rueda para acercar</span>
+            <button type="button" data-action="trails" aria-pressed="true">Trazas: sí</button>
+          </div>
+        </div>
+        <aside class="phase-panel">
+          <div class="phase-head"><div><p>PROYECCIÓN DEL ESPACIO DE FASES</p><h3>Separación frente a velocidad radial</h3></div><span data-phase-readout>r₁₂ · ṙ₁₂</span></div>
+          <div class="phase-plot"><canvas class="phase-canvas" width="420" height="420" aria-label="Proyección del espacio de fases: separación entre los cuerpos azul y naranja frente a su velocidad radial relativa"></canvas><span class="phase-y">ṙ₁₂</span><span class="phase-x">r₁₂</span></div>
+          <div class="not-attractor"><b>NO ES UN ATRACTOR</b><p>Un atractor es un conjunto hacia el que convergen estados cercanos. Aquí la trayectoria puede dibujar una estructura compleja sin converger hacia ella: la gravedad ideal conserva energía y volumen de fase, sin disipación que atraiga órbitas.</p></div>
+          <p class="phase-explain"><b>Espacio de fases</b> es el mapa de todos los estados posibles: posiciones y velocidades. Para tres cuerpos en 3D tiene 18 dimensiones; aquí sólo vemos una proyección de dos. Dos trazos pueden cruzarse sin que el estado completo se repita.</p>
+        </aside>
+        <aside class="control-panel">
+          <div class="panel-head"><p>CONDICIONES INICIALES</p><span class="status" role="status">Danza periódica</span></div>
+          <div class="presets" aria-label="Escenarios de tres cuerpos">
+            <button type="button" class="active" data-preset="figure8">Figura 8</button>
+            <button type="button" data-preset="lagrange">Triángulo</button>
+            <button type="button" data-preset="binary">Visitante</button>
+            <button type="button" data-preset="chaos">Caos</button>
+          </div>
+          <div class="controls-list compact">
+            <label>Masa azul <output data-output="mass1">1,00</output><input data-param="mass1" type="range" min="0.1" max="3" value="1" step="0.02"></label>
+            <label>Masa naranja <output data-output="mass2">1,00</output><input data-param="mass2" type="range" min="0.1" max="3" value="1" step="0.02"></label>
+            <label>Masa clara <output data-output="mass3">1,00</output><input data-param="mass3" type="range" min="0.1" max="3" value="1" step="0.02"></label>
+            <label>Escala de distancia <output data-output="distance">6,0</output><input data-param="distance" type="range" min="2" max="12" value="6" step="0.1"></label>
+            <label>Velocidad inicial <output data-output="speed">1,00 ×</output><input data-param="speed" type="range" min="0.2" max="1.8" value="1" step="0.01"></label>
+            <label>Perturbación vertical <output data-output="perturbation">0,00</output><input data-param="perturbation" type="range" min="0" max="1.5" value="0" step="0.01"></label>
+          </div>
+          <div class="readouts">
+            <div><small>DERIVA DE ENERGÍA</small><b data-readout="energy">—</b></div>
+            <div><small>MAYOR DISTANCIA</small><b data-readout="separation">—</b></div>
+          </div>
+          <label class="playback-control">Velocidad de reproducción<select data-playback aria-label="Velocidad de la simulación"><option value="0.25">¼×</option><option value="0.5">½×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option><option value="16">16×</option><option value="32">32×</option></select></label>
+          <div class="sim-actions">
+            <button type="button" data-action="play"><span>Ⅱ</span> Pausar</button>
+            <button type="button" data-action="reset">↺ Reiniciar</button>
+          </div>
+          <p class="units">El integrador leapfrog conserva bien la energía, pero sigue siendo una aproximación. Los encuentros extremadamente próximos se suavizan para mantener estable la demostración.</p>
+        </aside>
+      </div>
+
+      <div class="sensitivity">
+        <p class="chapter">PRUEBA ESTO</p>
+        <p>Elige <b>Figura 8</b> y sube la masa naranja de 1,00 a 1,02. La coreografía deja de cerrarse: no cambió la ley, sólo el futuro.</p>
+      </div>
+    </section>
+
+    <section class="lagrange" id="lagrange">
+      <div class="lagrange-head"><p class="chapter">UN TERCER CUERPO CASI SIN MASA</p><h2>Los puntos de Lagrange.</h2><p>En un sistema de dos cuerpos que gira —como el Sol y la Tierra— existen cinco lugares donde gravedad y movimiento orbital se equilibran en el marco rotatorio. Un objeto pequeño puede conservar aproximadamente la misma geometría respecto a los dos cuerpos grandes. Es el problema restringido circular: el tercero tiene masa despreciable y no altera las órbitas de los dos principales. No es un lugar sin gravedad ni un cuerpo inmóvil.</p></div>
+      <div class="lagrange-layout">
+        <div class="lagrange-map">
+          <svg viewBox="0 0 1000 560" role="img" aria-labelledby="lagrangeTitle lagrangeDesc">
+            <title id="lagrangeTitle">Los cinco puntos de Lagrange del sistema Sol–Tierra y la órbita de James Webb alrededor de L2</title>
+            <desc id="lagrangeDesc">El Sol aparece a la izquierda, la Tierra a la derecha, L1 entre ambos, L2 más allá de la Tierra, L3 al lado opuesto y L4 y L5 formando triángulos.</desc>
+            <defs><radialGradient id="sunGlow"><stop offset="0" stop-color="#fff4ba"/><stop offset=".3" stop-color="#e9c46a"/><stop offset="1" stop-color="#e9c46a" stop-opacity="0"/></radialGradient></defs>
+            <path class="earth-orbit" d="M75 280 C190 25 665 25 720 280 C665 535 190 535 75 280"/>
+            <circle class="sun-glow" cx="75" cy="280" r="74" fill="url(#sunGlow)"/><circle class="sun-body" cx="75" cy="280" r="29"/>
+            <circle class="earth-body" cx="720" cy="280" r="13"/><circle class="moon-orbit" cx="720" cy="280" r="27"/>
+            <line class="system-axis" x1="25" y1="280" x2="900" y2="280"/>
+            <g class="lagrange-point"><circle cx="625" cy="280" r="7"/><text x="606" y="257">L1</text></g>
+            <g class="lagrange-point active"><circle cx="815" cy="280" r="8"/><text x="806" y="253">L2</text></g>
+            <g class="lagrange-point"><circle cx="25" cy="280" r="7"/><text x="15" y="253">L3</text></g>
+            <g class="lagrange-point stable"><circle cx="398" cy="75" r="7"/><text x="386" y="51">L4</text></g>
+            <g class="lagrange-point stable"><circle cx="398" cy="485" r="7"/><text x="386" y="523">L5</text></g>
+            <path class="triangle-guide" d="M75 280 L398 75 L720 280 L398 485 Z"/>
+            <ellipse class="halo-orbit" cx="815" cy="280" rx="42" ry="92"/>
+            <circle class="webb" cx="843" cy="213" r="6"/><path class="webb-shield" d="M833 219 L843 207 L853 219 Z"/>
+            <text class="body-label" x="48" y="340">Sol</text><text class="body-label" x="695" y="330">Tierra</text><text class="webb-label" x="864" y="205">James Webb</text><text class="halo-label" x="858" y="350">órbita de halo</text>
+          </svg>
+          <span>Esquema en el marco que gira con la Tierra · distancias no a escala</span>
+        </div>
+        <div class="lagrange-copy">
+          <article><b>L1 · L2 · L3</b><h3>Equilibrio inestable</h3><p>Una desviación pequeña crece, como una canica sobre una colina. Las naves necesitan correcciones periódicas de trayectoria para permanecer cerca.</p></article>
+          <article><b>L4 · L5</b><h3>Islas de estabilidad</h3><p>Forman triángulos equiláteros con los dos cuerpos principales. Cuando la diferencia de masas es suficientemente grande, pequeñas desviaciones pueden oscilar alrededor del punto.</p></article>
+          <article class="webb-card"><b>SOL–TIERRA L2</b><h3>James Webb no está quieto en L2</h3><p>Describe una órbita de halo alrededor de L2, aproximadamente a 1,5 millones de kilómetros más allá de la Tierra. Sol, Tierra y Luna quedan siempre en el mismo lado, lo que facilita mantener frío el telescopio con su parasol. Pequeñas maniobras de mantenimiento impiden que se aleje.</p></article>
+        </div>
+      </div>
+      <div class="rotating-note"><span>MARCO ROTATORIO</span><p>Los puntos sólo parecen fijos si observamos desde un sistema que gira con la Tierra. En un marco inercial, L1–L5 recorren una órbita alrededor del Sol junto con ella. La fuerza centrífuga aparece al describir el movimiento desde ese marco giratorio.</p></div>
+    </section>
+
+    <section class="mission" id="mision-l2">
+      <div class="mission-head"><div><p class="chapter">JUEGO · MISIÓN L2</p><h2>Lanza un observatorio.</h2></div><p>El cohete ya ha superado la atmósfera y libera un radiotelescopio ficticio en el lado nocturno de la Tierra. Tú decides el impulso de inyección. El objetivo es atravesar lentamente la ventana de llegada a L2 sin caer de nuevo, chocar ni perder la misión en otra órbita solar.</p></div>
+      <div class="mission-game">
+        <div class="mission-viewport">
+          <canvas id="missionCanvas" width="1100" height="700" aria-label="Juego de lanzamiento de un radiotelescopio desde la Tierra hacia el punto L2"></canvas>
+          <div class="mission-hud"><span><i></i> PROBLEMA RESTRINGIDO SOL–TIERRA</span><b id="missionClock">Día 0,0</b></div>
+          <div class="mission-view-label"><span id="missionViewName">VISTA LOCAL · TIERRA–L2</span><button type="button" id="missionView">Ver sistema completo</button></div>
+        </div>
+        <aside class="mission-controls">
+          <div class="panel-head"><p>CONTROL DE LANZAMIENTO</p><span class="status" id="missionStatus" role="status">En plataforma</span></div>
+          <div class="mission-brief"><span>OBJETIVO</span><p>Pasar a menos de <b>120.000 km</b> de L2 con una velocidad relativa inferior a <b>600 m/s</b>. Allí una misión real haría correcciones para entrar en su órbita de halo.</p></div>
+          <div class="mission-presets"><button type="button" class="active" data-mission-preset="reference">Ventana L2</button><button type="button" data-mission-preset="slow">Impulso bajo</button><button type="button" data-mission-preset="fast">Demasiado rápido</button></div>
+          <div class="mission-sliders">
+            <label>Velocidad de inyección <output id="launchSpeedValue">1.700 m/s</output><input id="launchSpeed" type="range" min="1200" max="3000" value="1700" step="10"></label>
+            <label>Ángulo hacia el avance orbital <output id="launchAngleValue">+15,0°</output><input id="launchAngle" type="range" min="-25" max="25" value="15" step="0.5"></label>
+          </div>
+          <label class="playback-control">Velocidad de la misión<select id="missionPlayback"><option value="1">1 día/s</option><option value="5">5 días/s</option><option value="20" selected>20 días/s</option><option value="60">60 días/s</option></select></label>
+          <div class="mission-readouts"><div><small>DISTANCIA A L2</small><b id="distanceL2">—</b></div><div><small>MEJOR APROXIMACIÓN</small><b id="closestL2">—</b></div><div><small>VELOCIDAD RELATIVA</small><b id="relativeSpeed">—</b></div><div><small>DISTANCIA A TIERRA</small><b id="distanceEarth">—</b></div></div>
+          <div class="mission-actions"><button type="button" id="missionLaunch">Lanzar →</button><button type="button" id="missionReset">↺ Preparar de nuevo</button></div>
+          <p class="units">La partida comienza a unos 224.000 km de la Tierra, después del ascenso y de la primera inyección del lanzador. Integramos el movimiento del telescopio; su masa es demasiado pequeña para alterar al Sol o a la Tierra.</p>
+        </aside>
+      </div>
+      <div class="mission-outcomes"><article><span>01</span><h3>Impulso insuficiente</h3><p>La gravedad terrestre recupera el vehículo: puede quedar en una órbita muy elíptica o regresar hacia la Tierra.</p></article><article><span>02</span><h3>Corredor de L2</h3><p>Una llegada lenta ofrece una oportunidad de inserción. L2 es inestable: alcanzar la zona no significa permanecer allí sin correcciones.</p></article><article><span>03</span><h3>Exceso de energía</h3><p>El observatorio atraviesa la región demasiado deprisa y continúa en una órbita heliocéntrica distinta de la terrestre.</p></article></div>
+      <div class="webb-clarification"><b>¿ES ESTO JAMES WEBB?</b><p>La arquitectura está inspirada en su transferencia, pero Webb observa principalmente en infrarrojo, no en radio. Tampoco fue simplemente disparado hacia un punto: el Ariane 5, varias correcciones de trayectoria y maniobras de mantenimiento forman parte de la misión real.</p></div>
+    </section>
+
+    <section class="history" id="historia">
+      <div class="history-head"><p class="chapter">UNA HISTORIA INACABADA</p><h2>De la órbita perfecta<br>al nacimiento del caos.</h2></div>
+      <div class="timeline-history">
+        <article><time>1687</time><div><h3>Newton unifica cielo y Tierra</h3><p>Los <i>Principia</i> convierten las leyes de Kepler en una consecuencia de la gravitación universal. El problema de dos cuerpos queda resuelto en forma de secciones cónicas.</p></div></article>
+        <article><time>1772</time><div><h3>Euler y Lagrange encuentran islas de orden</h3><p>Descubren soluciones especiales de tres cuerpos: alineadas o formando un triángulo equilátero. Los puntos de Lagrange aún guían telescopios y sondas.</p></div></article>
+        <article><time>1890</time><div><h3>Poincaré descubre la sensibilidad</h3><p>Al estudiar el problema restringido, encuentra órbitas de complejidad inesperada. Su trabajo abre el camino a la teoría moderna de sistemas dinámicos y caos.</p></div></article>
+        <article><time>Hoy</time><div><h3>Calculamos trayectorias, no una fórmula universal</h3><p>Existen soluciones especiales —como las configuraciones de Lagrange— y hasta construcciones teóricas mediante series infinitas, pero no una fórmula general útil. Para sistemas concretos usamos integración numérica.</p></div></article>
+      </div>
+    </section>
+
+    <section class="method">
+      <div><p class="chapter">BAJO EL CAPÓ</p><h2>Qué calcula esta página.</h2></div>
+      <div class="method-grid">
+        <article><span>01</span><h3>Aceleración</h3><code>aᵢ = G Σ mⱼ(rⱼ − rᵢ) / |rⱼ − rᵢ|³</code><p>Sumamos la atracción de todos los demás cuerpos en los ejes x, y, z.</p></article>
+        <article><span>02</span><h3>Integración</h3><code>v½ → r₁ → a₁ → v₁</code><p>Leapfrog avanza velocidad y posición de forma simétrica y limita la deriva artificial de energía.</p></article>
+        <article><span>03</span><h3>Proyección</h3><code>(x, y, z) → cámara → pantalla</code><p>La física sucede en 3D. La cámara que manejas proyecta después las posiciones y sus trazas al lienzo.</p></article>
+      </div>
+    </section>
+    <section class="equations">
+      <div class="equations-head"><p class="chapter">MÉTODO NUMÉRICO</p><h2>Una iteración, abierta.</h2><p>La animación vuelve a calcular la gravedad en cada paso. Estas son las ecuaciones que convierten una ley continua en una trayectoria dibujada.</p></div>
+      <div class="equations-body">
+        <div class="equation-block"><span>01 · ACELERACIÓN</span><code>𝐚ᵢ = G Σⱼ≠ᵢ mⱼ (𝐫ⱼ − 𝐫ᵢ) / (|𝐫ⱼ − 𝐫ᵢ|² + ε²)<sup>3/2</sup></code><p>Para cada cuerpo sumamos la atracción de todos los demás en los ejes x, y, z. La misma expresión sirve para dos y para tres cuerpos; lo único que cambia es cuántas contribuciones se suman.</p></div>
+        <div class="equation-block"><span>02 · LEAPFROG</span><code>𝐯ₙ₊½ = 𝐯ₙ + ½Δt · 𝐚(𝐫ₙ)<br>𝐫ₙ₊₁ = 𝐫ₙ + Δt · 𝐯ₙ₊½<br>𝐯ₙ₊₁ = 𝐯ₙ₊½ + ½Δt · 𝐚(𝐫ₙ₊₁)</code><p>Esquema <i>kick–drift–kick</i>: medio impulso, desplazamiento y medio impulso. Al ser simétrico en el tiempo, limita mucho mejor la deriva artificial de energía que el método de Euler.</p></div>
+        <div class="equation-block"><span>03 · ENERGÍA</span><code>H = T + V = Σᵢ ½mᵢ|𝐯ᵢ|² − GΣᵢ&lt;ⱼ mᵢmⱼ / √(rᵢⱼ² + ε²)</code><p>El panel compara la energía actual con la inicial. En una integración ideal permanecería constante; una deriva pequeña es la señal de que el paso elegido está resolviendo bien la órbita.</p></div>
+      </div>
+      <div class="equations-notes"><div><b>ε = 0,055</b><span>Suavizado de encuentros</span><p>En lugar de dividir por <code>r³</code>, usamos <code>(r² + ε²)<sup>3/2</sup></code>. No cambia el aspecto de las órbitas normales y evita una aceleración infinita durante una aproximación extrema.</p></div><div><b>G = 1</b><span>Unidades normalizadas</span><p>Masas, distancias y tiempos son adimensionales. La forma de la órbita es interpretable, pero no equivale directamente a años, kilómetros o masas solares.</p></div><div><b>3D real</b><span>La pantalla es sólo una proyección</span><p>Las posiciones y velocidades tienen tres componentes. Girar la cámara sólo cambia cómo se proyectan; nunca altera el resultado físico.</p></div></div>
+    </section>
+  </main>
+
+  <footer>
+    <div><b>ÓRBITAS</b><p>Laboratorio educativo de dinámica gravitatoria.</p></div>
+    <p>Simulación ideal: masas puntuales, gravedad newtoniana y sin efectos relativistas.</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="mission.js"></script>
+</body>
+</html>

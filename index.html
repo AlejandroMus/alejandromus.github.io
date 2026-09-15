@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cuaderno interactivo de astronomía, matemáticas y simulación">
+  <meta name="theme-color" content="#07171c">
+  <title>Cuaderno celeste · Alejandro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="#inicio"><span></span>ALEJANDRO</a>
+    <nav aria-label="Navegación principal">
+      <a href="#entradas">Experimentos</a>
+      <a href="#acerca">El cuaderno</a>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">ASTRONOMÍA · MATEMÁTICAS · CÓDIGO</p>
+        <h1>Un cuaderno para<br><em>tocar el cielo.</em></h1>
+        <p class="lead">Historias científicas que no terminan en una fórmula: atlas vivos, órbitas que puedes perturbar y preguntas que se dejan explorar.</p>
+        <a class="enter" href="#entradas">Abrir los experimentos <span>↓</span></a>
+      </div>
+      <div class="celestial" aria-hidden="true">
+        <div class="sun"></div>
+        <div class="ring ring-one"><i></i></div>
+        <div class="ring ring-two"><i></i></div>
+        <div class="ring ring-three"><i></i></div>
+        <span class="star star-a"></span><span class="star star-b"></span><span class="star star-c"></span>
+      </div>
+    </section>
+
+    <section class="entries" id="entradas">
+      <div class="section-title">
+        <p>ENTRADAS INTERACTIVAS</p>
+        <h2>Dos maneras de mirar<br>un sistema celeste.</h2>
+      </div>
+
+      <a class="entry saros" href="saros/">
+        <div class="entry-number">01</div>
+        <div class="entry-visual" aria-hidden="true"><div class="eclipse"><span></span></div><div class="shadow-line"></div></div>
+        <div class="entry-copy">
+          <p>ECLIPSES · GEOMETRÍA · TIEMPO</p>
+          <h3>La sombra que vuelve.</h3>
+          <span>Recorre las 181 familias Saros, abre sus mapas y descubre por qué un eclipse casi se repite cada 18 años.</span>
+          <b>Entrar al atlas <i>↗</i></b>
+        </div>
+      </a>
+
+      <a class="entry orbits" href="orbitas/">
+        <div class="entry-number">02</div>
+        <div class="entry-visual" aria-hidden="true"><div class="orbit-system"><i></i><i></i><i></i></div></div>
+        <div class="entry-copy">
+          <p>GRAVEDAD · MOVIMIENTO · CAOS</p>
+          <h3>El tercero cambia las reglas.</h3>
+          <span>Juega en 3D con dos y tres cuerpos, observa el espacio de fases y lanza un observatorio hacia L2.</span>
+          <b>Entrar al laboratorio <i>↗</i></b>
+        </div>
+      </a>
+    </section>
+
+    <section class="about" id="acerca">
+      <p class="about-label">EL CUADERNO</p>
+      <p class="about-statement">La intuición también es una herramienta científica. Cada entrada combina contexto, ecuaciones y una simulación que permite preguntar <em>«¿qué pasaría si…?»</em></p>
+      <div class="principles"><span><b>01</b> Entender</span><span><b>02</b> Experimentar</span><span><b>03</b> Volver a preguntar</span></div>
+    </section>
+  </main>
+
+  <footer><span>CUADERNO CELESTE</span><p>Hecho con física, código y curiosidad.</p><a href="#inicio">Volver arriba ↑</a></footer>
+</body>
+</html>
