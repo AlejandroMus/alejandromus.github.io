@@ -5,7 +5,7 @@ const fullClock=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',hour:'
 const dateFormat=new Intl.DateTimeFormat('es-ES',{timeZone:'Europe/Madrid',weekday:'long',day:'numeric',month:'long',year:'numeric'});
 const todayFormat=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'});
 const number=new Intl.NumberFormat('es-ES',{maximumFractionDigits:1,minimumFractionDigits:1});
-let features=[],selected=null,point=null,projection=null;
+let features=[],places=[],selected=null,point=null,projection=null,locationName='';
 function today() { const p=Object.fromEntries(todayFormat.formatToParts(new Date()).map(v=>[v.type,v.value])); return `${p.year}-${p.month}-${p.day}`; }
 function svg(tag,attrs={},parent) { const node=document.createElementNS(NS,tag); for(const [key,value] of Object.entries(attrs))node.setAttribute(key,String(value)); if(parent)parent.append(node);return node; }
 function polygons(feature){return feature.geometry.type==='Polygon'?[feature.geometry.coordinates]:feature.geometry.coordinates;}
@@ -28,6 +28,7 @@ function makeMap() {
   const xOffset=(720-(maxX-minX)*cos*scale)/2,yOffset=(560-(maxY-minY)*scale)/2;
   projection={forward:p=>[xOffset+(p[0]-minX)*cos*scale,yOffset+(maxY-p[1])*scale],inverse:p=>[minX+(p[0]-xOffset)/(cos*scale),maxY-(p[1]-yOffset)/scale]};
   $('regions').replaceChildren();$('municipality').replaceChildren();
+  const custom=document.createElement('option');custom.value='';custom.textContent='Punto sin municipio asignado';custom.disabled=true;$('municipality').append(custom);
   for(const feature of features) {
     const {ID,NOM}=feature.properties;
     const option=document.createElement('option');option.value=ID;option.textContent=NOM;$('municipality').append(option);
@@ -43,11 +44,13 @@ function makeMap() {
   }
   $('municipality').disabled=false;
 }
-function select(feature,coordinates) {
-  selected=feature;point=coordinates||reference(feature);$('municipality').value=feature.properties.ID;
-  document.querySelectorAll('.municipality').forEach(path=>{const active=path.dataset.id===feature.properties.ID;path.classList.toggle('active',active);path.setAttribute('aria-pressed',String(active));});
+function select(feature,coordinates,name,mode='map') {
+  selected=feature;point=coordinates||reference(feature);locationName=name||feature?.properties.NOM||'Punto en el entorno de Mallorca';$('municipality').value=feature?.properties.ID||'';
+  document.querySelectorAll('.municipality').forEach(path=>{const active=path.dataset.id===feature?.properties.ID;path.classList.toggle('active',active);path.setAttribute('aria-pressed',String(active));});
   const [x,y]=projection.forward(point);$('pin').setAttribute('transform',`translate(${x},${y})`);
-  $('map-name').textContent=feature.properties.NOM;$('coordinates').textContent=`${point[1].toFixed(4)}° N · ${point[0].toFixed(4)}° E`;
+  $('map-name').textContent=locationName;$('coordinates').textContent=`${point[1].toFixed(4)}° N · ${point[0].toFixed(4)}° E`;
+  $('latitude').value=String(Number(point[1].toFixed(6)));$('longitude').value=String(Number(point[0].toFixed(6)));
+  $('location-status').textContent=mode==='coordinates'?`Coordenadas aplicadas${feature?`: municipio de ${feature.properties.NOM}`:': sin municipio asignado por el mapa simplificado'}.`:mode==='place'?`Lugar seleccionado: ${locationName}${feature?` · ${feature.properties.NOM}`:''}.`:'';
   update();
 }
 function drawMoon(result) {
@@ -65,7 +68,7 @@ function drawMoon(result) {
 function drawChart(result) {
   const root=$('chart');root.replaceChildren();const W=1000,H=320,p={l:58,r:25,t:22,b:45},span=result.end-result.start;
   const x=time=>p.l+(time-result.start)/span*(W-p.l-p.r),y=alt=>p.t+(90-alt)/180*(H-p.t-p.b);
-  const title=svg('title',{},root);title.textContent=`Altura lunar en ${selected.properties.NOM}: ${dateFormat.format(result.noon)}`;
+  const title=svg('title',{},root);title.textContent=`Altura lunar en ${locationName}: ${dateFormat.format(result.noon)}`;
   const description=svg('desc',{},root);description.textContent=`Máximo ${number.format(result.maximum.altitude)} grados a las ${fullClock.format(result.maximum.time)}. Eje horizontal: hora local. Eje vertical: altura en grados.`;
   svg('rect',{x:p.l,y:y(90),width:W-p.l-p.r,height:y(0)-y(90),fill:'#e2eeea'},root);
   for(const alt of [-90,-45,0,45,90]){
@@ -84,12 +87,12 @@ function drawChart(result) {
   $('chart-description').textContent=`Día de ${span/3600000} horas locales. Máximo: ${number.format(result.maximum.altitude)}° a las ${fullClock.format(result.maximum.time)}. Las alturas negativas sitúan el centro de la Luna bajo el horizonte. La salida y la puesta usan el borde del disco, por lo que no coinciden exactamente con el cruce de la curva por 0°.`;
 }
 function update() {
-  if(!selected)return;
+  if(!point)return;
   try {
     if(!$('date').checkValidity())throw Error('Elige una fecha válida entre 1900 y 2100.');
     const result=Lunar.calculate($('date').value,point[1],point[0]);
     $('phase-name').textContent=result.name;$('illumination').textContent=`${number.format(result.fraction*100)} %`;
-    $('result-date').textContent=`${selected.properties.NOM} · ${dateFormat.format(result.noon)}`;
+    $('result-date').textContent=`${locationName} · ${dateFormat.format(result.noon)}`;
     for(const [id,events,label] of [['rise',result.rises,'salida'],['set',result.sets,'puesta']]){
       $(id).textContent=events.length?events.map(date=>{const rounded=new Date(Math.round(+date/60000)*60000);return rounded>=result.end?'24:00':clock.format(rounded);}).join(' / '):`Sin ${label} este día`;
       $(id).classList.toggle('absent',events.length===0);
@@ -108,12 +111,44 @@ $('date').value=today();$('date').addEventListener('change',update);
 $('controls').addEventListener('submit',event=>{event.preventDefault();update();});
 $('municipality').addEventListener('change',()=>select(features.find(f=>f.properties.ID===$('municipality').value)));
 $('previous').addEventListener('click',()=>shiftDay(-1));$('next').addEventListener('click',()=>shiftDay(1));$('today').addEventListener('click',()=>{$('date').value=today();update();});
+$('coordinate-form').addEventListener('submit',event=>{
+  event.preventDefault();
+  try {
+    if(!features.length)throw Error('Espera a que se cargue el mapa antes de elegir las coordenadas.');
+    const coords=LunarLocation.parseCoordinates($('latitude').value,$('longitude').value);
+    if(!LunarLocation.inArea(features,coords))throw Error('Estas coordenadas están fuera del área de Mallorca y su entorno. Introduce un punto de la isla o cercano a su costa.');
+    const feature=LunarLocation.municipalityAt(features,coords);
+    select(feature,coords,feature?`Punto en ${feature.properties.NOM}`:'Punto en el entorno de Mallorca','coordinates');
+  }catch(error){$('location-status').textContent=error.message;}
+});
+$('place-form').addEventListener('submit',event=>{
+  event.preventDefault();$('place-results').replaceChildren();
+  const query=$('place-query').value.trim();
+  if(query.length<2){$('place-status').textContent='Escribe al menos dos caracteres.';return;}
+  const results=LunarLocation.searchPlaces(places,query);
+  $('place-status').textContent=results.length?`${results.length} resultados${results.length===12?' (se muestran los primeros 12)':''}. Elige el lugar desde el que observarás.`:'No hay coincidencias en este catálogo. Prueba otro nombre, selecciona el mapa o introduce las coordenadas.';
+  const kinds={P:'Núcleo de población',T:'Relieve / costa',H:'Agua / costa',L:'Área',S:'Lugar / edificio'};
+  for(const place of results){
+    const item=document.createElement('li'),button=document.createElement('button'),title=document.createElement('strong'),detail=document.createElement('span');
+    button.type='button';title.textContent=place.name;detail.textContent=`${place.municipality} · ${kinds[place.class]||'Lugar'} · ${place.latitude.toFixed(4)}° N, ${place.longitude.toFixed(4)}° E`;
+    button.append(title,detail);item.append(button);$('place-results').append(item);
+    button.addEventListener('click',()=>{const coords=[place.longitude,place.latitude];select(LunarLocation.municipalityAt(features,coords),coords,place.name,'place');$('place-status').textContent=`Calculando desde ${place.name}.`;});
+  }
+});
+async function loadPlaces(){
+  try {
+    const response=await fetch('lugares.json');if(!response.ok)throw Error('No se pudo cargar el catálogo de lugares. Puedes usar el mapa o las coordenadas.');
+    const data=await response.json();places=data.places;
+    if(!Array.isArray(places)||!places.length)throw Error('El catálogo de lugares está vacío. Puedes usar el mapa o las coordenadas.');
+    $('place-submit').disabled=false;$('place-status').textContent=`${places.length.toLocaleString('es-ES')} lugares disponibles. Busca por nombre y elige un resultado.`;
+  }catch(error){$('place-status').textContent=error.message;}
+}
 (async function init(){
   try{
-    if(typeof Astronomy==='undefined'||typeof Lunar==='undefined')throw Error('No se pudo cargar el cálculo astronómico. Recarga la página.');
+    if(typeof Astronomy==='undefined'||typeof Lunar==='undefined'||typeof LunarLocation==='undefined')throw Error('No se pudo cargar el cálculo astronómico. Recarga la página.');
     const response=await fetch('municipios.geojson');if(!response.ok)throw Error('No se pudo abrir el mapa. Recarga la página para volver a intentarlo.');
     const data=await response.json();features=data.features.sort((a,b)=>a.properties.NOM.localeCompare(b.properties.NOM,'ca'));
     if(features.length!==53)throw Error('El mapa de municipios está incompleto.');
-    makeMap();select(features.find(f=>f.properties.NOM==='Palma')||features[0]);
+    makeMap();select(features.find(f=>f.properties.NOM==='Palma')||features[0]);loadPlaces();
   }catch(error){showError(error.message);}finally{$('loading').hidden=true;}
 })();

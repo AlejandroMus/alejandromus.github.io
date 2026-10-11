@@ -37,6 +37,35 @@ rotación de campo ni inclinación del terminador respecto al horizonte.
 
 ## Cartografía
 
+### Búsqueda por lugar y coordenadas
+
+El buscador consulta un extracto local de [GeoNames](https://www.geonames.org/),
+descargado de [ES.zip](https://download.geonames.org/export/dump/ES.zip) el 11
+de octubre de 2026. Licencia [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/).
+El [formato oficial](https://download.geonames.org/export/dump/readme.txt)
+describe las coordenadas WGS84 y los nombres alternativos.
+
+`build_places.py` conserva los puntos de clases P, T, H, L y S situados dentro
+de los límites municipales simplificados de Mallorca y sus islas adscritas:
+núcleos de población, relieve, agua, áreas y lugares/edificios. El catálogo
+contiene 2693 puntos. No es un callejero completo; los puntos cerca de la costa
+pueden quedar excluidos por la simplificación geométrica. Se conservan los
+identificadores GeoNames y hasta 35 nombres alternativos. `lugares.json`
+registra el origen, la licencia, la fecha y el SHA-256 del archivo descargado.
+
+Las búsquedas se procesan en el navegador; ignoran tildes, mayúsculas y algunas
+variantes de puntuación. Se muestran hasta 12 resultados, con municipio,
+tipo y coordenadas para distinguir nombres iguales. No se consulta una API
+de geocodificación ni se envía la búsqueda a terceros.
+
+Las coordenadas se introducen como latitud y longitud, con punto o coma
+decimal. Se usa el punto exacto introducido para calcular, no un centroide.
+La interfaz acepta Mallorca y su entorno próximo (envolvente del mapa más
+0,05° por lado). Un punto marítimo puede no tener municipio asignado; conserva
+la hora civil de Mallorca. El observador sigue a nivel del mar.
+
+### Límites municipales
+
 [IDEIB, Govern de les Illes Balears: Municipis Illes Balears](https://ideib.caib.es/geoserveis/rest/services/public/GOIB_UnitAdm_IB/MapServer/1).
 [Catálogo del conjunto de datos y licencia CC BY](https://datos.gob.es/es/catalogo/a04003003-municipios1).
 
