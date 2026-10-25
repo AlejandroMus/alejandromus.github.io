@@ -14,6 +14,8 @@ investigación y entrevistas permanecen ocultas hasta tener contenido real.
   hasta que la foto real cargue correctamente.
 - `cv`: ruta al PDF público, por ejemplo `assets/cv.pdf`.
 - `orcid`, `scholar`, `github`: enlaces completos a los perfiles correctos.
+- `mirada`: enlace al grupo MIRADA de la UIB.
+- `bioSource` y `bioSourceLabel`: enlace y etiqueta del perfil académico de la UIB.
 - `email`: solo una dirección que quieras hacer pública.
 - `research.publications`: objetos con `title`, `url`, `year`, `venue` y una
   `description` breve. `research.intro` presenta tus líneas de investigación.
@@ -22,11 +24,12 @@ investigación y entrevistas permanecen ocultas hasta tener contenido real.
 
 No se han inventado afiliaciones, titulaciones, publicaciones ni entrevistas.
 
-La biografía publicada, la formación y los enlaces de ORCID y Scholar se
-basan en el [perfil institucional de Alejandro Mus en IA-FORTH](https://www.ia.forth.gr/node/1321).
-No se deduce de esa ficha una afiliación o cargo actual. El retrato personal
-sigue pendiente de recibir la fotografía original del autor; la foto de ALMA
-solo ilustra el experimento de interferometría, con crédito separado.
+La referencia académica publicada es el [perfil de Alejandro Mus en la UIB](https://www.uib.es/personal/ABjI0NTI0Mw/).
+La formación también se documenta en la [semblanza de Estalmat de la UIB](https://blocs.uib.cat/estalmat/professorat-25-26/).
+Se enlaza directamente a [MIRADA — Modelización y Procesamiento de Datos Radioastronómicos](https://www.uib.es/recerca/estructures/estructura/MIRADA/).
+El retrato personal sigue pendiente de recibir la fotografía original del
+autor; la foto de ALMA solo ilustra el experimento de interferometría, con
+crédito separado.
 
 ## Activar estadísticas privadas con GoatCounter
 
