@@ -9,6 +9,8 @@
   document.querySelectorAll('[data-author]').forEach(node=>node.textContent=profile.name||'Alejandro');
   if(profile.headline)$('profile-headline').textContent=profile.headline;
   if(profile.bio)$('profile-bio').textContent=profile.bio;
+  const bioSource=safeUrl(profile.bioSource);
+  if(bioSource){const p=document.createElement('p'),a=document.createElement('a');p.className='profile-source';a.href=bioSource;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Trayectoria y perfiles académicos · Instituto de Astrofísica de FORTH ↗';p.append(a);$('profile-bio').after(p);}
   const links=[['ORCID',profile.orcid],['Google Scholar',profile.scholar],['GitHub',profile.github],['CV completo ↓',profile.cv,true]];
   for(const [name,value,local] of links){const href=safeUrl(value,local);if(!href)continue;const a=document.createElement('a');a.textContent=name;a.href=href;if(!local){a.target='_blank';a.rel='noopener noreferrer';}else a.setAttribute('download','');$('profile-links').append(a);}
   if(profile.email&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email)){const a=document.createElement('a');a.href=`mailto:${profile.email}`;a.textContent='Contacto ↗';$('profile-links').append(a);}

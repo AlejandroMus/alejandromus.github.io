@@ -22,6 +22,12 @@ investigación y entrevistas permanecen ocultas hasta tener contenido real.
 
 No se han inventado afiliaciones, titulaciones, publicaciones ni entrevistas.
 
+La biografía publicada, la formación y los enlaces de ORCID y Scholar se
+basan en el [perfil institucional de Alejandro Mus en IA-FORTH](https://www.ia.forth.gr/node/1321).
+No se deduce de esa ficha una afiliación o cargo actual. El retrato personal
+sigue pendiente de recibir la fotografía original del autor; la foto de ALMA
+solo ilustra el experimento de interferometría, con crédito separado.
+
 ## Activar estadísticas privadas con GoatCounter
 
 Se necesita una cuenta propia. La integración está desactivada hasta tenerla.

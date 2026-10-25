@@ -2,6 +2,16 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.Interferometry=factory();})(typeof globalThis!=='undefined'?globalThis:this,function(){
   'use strict';
   const C=299792458,ARCSEC=Math.PI/(180*3600),RAD=Math.PI/180,FIELD=120;
+  const quadratures=new Map();
+  // Integral periódica de Bessel: J1(x) = <cos(t − x sin t)>.
+  // Es una cuadratura del núcleo continuo, no una colección de fuentes.
+  function besselJ1(x){
+    if(x===0)return 0;
+    const n=2**Math.ceil(Math.log2(Math.max(128,4*Math.abs(x)+32)));
+    if(!quadratures.has(n))quadratures.set(n,Array.from({length:n},(_,i)=>{const t=2*Math.PI*i/n;return {t,sin:Math.sin(t)};}));
+    let sum=0;for(const q of quadratures.get(n))sum+=Math.cos(q.t-x*q.sin);return sum/n;
+  }
+  function jinc(x){const x2=x*x;return Math.abs(x)<.01?1-x2/8+x2*x2/192-x2*x2*x2/9216:2*besselJ1(x)/x;}
   function layout(kind,count=6){
     if(!Number.isInteger(count)||count<3||count>8)throw Error('Elige entre 3 y 8 antenas.');
     return Array.from({length:count},(_,i)=>{
@@ -15,12 +25,19 @@
     const gaussian=(x,y,flux,sx,sy=sx)=>({l:x*ARCSEC,m:y*ARCSEC,flux,sx:sx*ARCSEC,sy:sy*ARCSEC});
     if(kind==='point')return [gaussian(0,0,1,0)];
     if(kind==='extended')return [gaussian(0,0,1,10,6)];
-    if(kind==='ring')return Array.from({length:16},(_,i)=>{const a=2*Math.PI*i/16;return gaussian(20*Math.cos(a),20*Math.sin(a),1/16,1.8);});
+    if(kind==='ring')return [{type:'annulus',l:0,m:0,flux:1,inner:17*ARCSEC,outer:23*ARCSEC}];
     return [gaussian(-separation/2,0,1/1.65,2),gaussian(separation/2,0,.65/1.65,2)];
   }
   function visibility(components,u,v){
     let re=0,im=0;
-    for(const s of components){const attenuation=Math.exp(-2*Math.PI*Math.PI*(s.sx*s.sx*u*u+s.sy*s.sy*v*v)),phase=2*Math.PI*(u*s.l+v*s.m),amp=s.flux*attenuation;re+=amp*Math.cos(phase);im-=amp*Math.sin(phase);}
+    for(const s of components){
+      const phase=2*Math.PI*(u*s.l+v*s.m);let amp;
+      if(s.type==='annulus'){
+        const q=2*Math.PI*Math.hypot(u,v),outer2=s.outer*s.outer,inner2=s.inner*s.inner;
+        amp=s.flux*(outer2*jinc(q*s.outer)-inner2*jinc(q*s.inner))/(outer2-inner2);
+      }else amp=s.flux*Math.exp(-2*Math.PI*Math.PI*(s.sx*s.sx*u*u+s.sy*s.sy*v*v));
+      re+=amp*Math.cos(phase);im-=amp*Math.sin(phase);
+    }
     return {re,im};
   }
   function project(east,north,hours,declination,latitude=40){
@@ -65,11 +82,23 @@
   function skyImage(components,size=64){
     const sky=new Float32Array(size*size),step=FIELD*ARCSEC/size;
     for(const s of components){
+      if(s.type==='annulus'){
+        const brightness=s.flux/(Math.PI*(s.outer*s.outer-s.inner*s.inner));
+        for(let y=0;y<size;y++)for(let x=0;x<size;x++){
+          let covered=0;
+          for(let sy=0;sy<4;sy++)for(let sx=0;sx<4;sx++){
+            const l=(x-size/2+(sx+.5)/4-.5)*step-s.l,m=(size/2-y+(sy+.5)/4-.5)*step-s.m,r=Math.hypot(l,m);
+            if(r>=s.inner&&r<=s.outer)covered++;
+          }
+          sky[y*size+x]+=brightness*covered/16;
+        }
+        continue;
+      }
       if(s.sx===0){const x=Math.round(s.l/step+size/2),y=Math.round(size/2-s.m/step);if(x>=0&&x<size&&y>=0&&y<size)sky[y*size+x]+=s.flux/(step*step);continue;}
       for(let y=0;y<size;y++)for(let x=0;x<size;x++){const l=(x-size/2)*step,m=(size/2-y)*step;sky[y*size+x]+=s.flux/(2*Math.PI*s.sx*s.sy)*Math.exp(-.5*((l-s.l)**2/s.sx**2+(m-s.m)**2/s.sy**2));}
     }
     return sky;
   }
   function simulate(params,size=64){const data=sample(params),images=reconstruct(data.samples,size);return {...data,...images,sky:skyImage(data.components,size),size};}
-  return {C,ARCSEC,FIELD,layout,scene,visibility,project,sample,reconstruct,skyImage,simulate};
+  return {C,ARCSEC,FIELD,besselJ1,jinc,layout,scene,visibility,project,sample,reconstruct,skyImage,simulate};
 });

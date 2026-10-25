@@ -40,3 +40,17 @@ test('Se rechazan antenas inválidas o coincidentes',()=>{
   assert.throws(()=>M.sample({...base(),frequency:0}));
   assert.throws(()=>M.sample({...base(),antennas:[{x:0,y:0},{x:190,y:0},{x:10,y:0}]}));
 });
+test('La función de Bessel coincide con valores tabulados y conserva el límite en cero',()=>{
+  for(const [x,j] of [[0,0],[1,.4400505857449335],[5,-.3275791375914652],[10,.04347274616886144],[20,.06683312417585005]])close(M.besselJ1(x),j,1e-12);
+  close(M.jinc(0),1);close(M.jinc(1e-8),1);
+});
+test('El anillo tiene simetría circular, centro vacío y flujo unitario',()=>{
+  const ring=M.scene('ring');assert.equal(ring.length,1);assert.equal(ring[0].type,'annulus');
+  close(M.visibility(ring,0,0).re,1);
+  for(const q of [0,1500,5000,15000,40000]){const a=M.visibility(ring,q,0);for(const t of [.2,.7,1.6,2.5]){const b=M.visibility(ring,q*Math.cos(t),q*Math.sin(t));close(a.re,b.re,1e-12);close(b.im,0);}}
+  const size=128,image=M.skyImage(ring,size),step=M.FIELD*M.ARCSEC/size;
+  assert.equal(image[size/2*size+size/2],0);
+  const flux=image.reduce((sum,value)=>sum+value,0)*step*step;close(flux,1,.01);
+  // Dentro de la corona, el brillo no depende de la dirección.
+  const radius=21,center=size/2;close(image[center*size+center+radius],image[(center+radius)*size+center],1e-3);
+});

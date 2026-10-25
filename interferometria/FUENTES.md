@@ -43,7 +43,23 @@ orientativa y no el FWHM del haz.
 - Dos fuentes: gaussianas circulares σ = 2″, separadas entre 10″ y 70″,
   con flujos relativos 1 y 0,65, normalizados a flujo total 1.
 - Fuente extendida: gaussiana elíptica σₓ = 10″, σᵧ = 6″.
-- Anillo: 16 gaussianas de σ = 1,8″ centradas sobre un radio de 20″.
+- Anillo: corona circular continua de brillo uniforme, con radio interior de
+  17″ y exterior de 23″, centrada en el origen y con flujo total 1.
+
+El anillo se calcula como la diferencia de dos discos uniformes:
+
+```text
+q = √(u² + v²)
+D(R,q) = 2 J₁(2πRq) / (2πRq), con D(R,0) = 1
+V(q) = [Rₒ² D(Rₒ,q) − Rᵢ² D(Rᵢ,q)] / (Rₒ² − Rᵢ²)
+```
+
+La visibilidad del disco se documenta en el [calculador de ESO](https://etimecal.hq.eso.org/observing/etc/doc/viscalc/helpvlti.htm).
+La diferencia ponderada se deduce por linealidad de la transformada de Fourier.
+La función de Bessel se evalúa por cuadratura de su
+[representación integral, NIST DLMF §10.9](https://dlmf.nist.gov/10.9).
+El brillo es uniforme en todas las direcciones del anillo. El dibujo integra
+la cobertura de cada píxel con submuestreo 4 × 4 en sus bordes.
 
 Las visibilidades de una gaussiana son
 F exp[−2π²(σₓ²u² + σᵧ²v²)] exp[−2πi(ul₀+vm₀)].
@@ -62,6 +78,15 @@ Sin haz primario, término w, errores de calibración, atmósfera, RFI,
 ancho de banda ni espectro de la fuente. Mantener el cielo igual al variar
 ν permite explorar solo el cambio del muestreo. No es una herramienta
 para planificar una observación real ni para medir flujos de los mapas.
+
+## Fotografía del observatorio
+
+La fotografía de ALMA procede de [ESO: ALMA antennas](https://www.eso.org/public/images/alma-osf-hh_1257-cc/).
+Crédito: **ESO**. Licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+según [las condiciones de uso de ESO](https://www.eso.org/public/outreach/copyright/).
+Es una fotografía de contexto, no una observación del cielo ni una imagen
+producida por este simulador. La distribución simulada no pretende representar
+el observatorio ALMA. Detalles de descarga y uso en `assets/FUENTES.md`.
 
 ## Reproducibilidad
 
