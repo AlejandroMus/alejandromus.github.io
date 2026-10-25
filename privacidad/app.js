@@ -1,0 +1,6 @@
+(function(){
+  'use strict';const $=id=>document.getElementById(id),a=globalThis.CuadernoAnalytics;
+  $('analytics-state').textContent=a?.configured?'La integración de estadísticas está configurada para el dominio de producción. El acceso al panel depende de la cuenta privada del propietario.':'Las estadísticas de visitas están desactivadas: todavía no hay un sitio de GoatCounter configurado y activo.';
+  function render(){const excluded=globalThis.CuadernoAnalytics?.excluded||false;$('toggle-analytics').textContent=excluded?'Permitir estadísticas desde este navegador':'Excluir este navegador';$('preference-state').textContent=excluded?'Este navegador está excluido del contador.':'Este navegador no tiene una exclusión local. Solo se registra si el servicio está activo.';}
+  $('toggle-analytics').addEventListener('click',()=>{try{const next=localStorage.getItem('cuaderno-no-estadisticas')!=='1';if(next)localStorage.setItem('cuaderno-no-estadisticas','1');else localStorage.removeItem('cuaderno-no-estadisticas');location.replace(location.pathname);}catch{$('preference-state').textContent='El navegador no permite guardar la preferencia. Puedes usar ?sin-estadisticas=1 para excluir la visita actual.';}});render();
+})();

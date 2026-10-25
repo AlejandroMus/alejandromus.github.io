@@ -7,21 +7,26 @@
   <meta name="theme-color" content="#07171c">
   <title>Cuaderno celeste · Alejandro</title>
   <link rel="stylesheet" href="style.css">
+  <script defer src="site.config.js"></script>
+  <script defer src="analytics.js"></script>
+  <script defer src="site.js"></script>
 </head>
 <body>
   <header class="site-header">
     <a class="wordmark" href="#inicio"><span></span>ALEJANDRO</a>
     <nav aria-label="Navegación principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#investigacion" data-research-nav hidden>Investigación</a>
       <a href="#entradas">Experimentos</a>
-      <a href="luna/">Luna en Mallorca</a>
-      <a href="#acerca">El cuaderno</a>
+      <a href="#entrevistas" data-interviews-nav hidden>Entrevistas</a>
     </nav>
   </header>
 
   <main id="inicio">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">ASTRONOMÍA · MATEMÁTICAS · CÓDIGO</p>
+        <p class="eyebrow">EL CUADERNO DE <span data-author>Alejandro</span> · ASTRONOMÍA Y CÓDIGO</p>
         <h1>Un cuaderno para<br><em>tocar el cielo.</em></h1>
         <p class="lead">Historias científicas que no terminan en una fórmula: atlas vivos, órbitas que puedes perturbar y preguntas que se dejan explorar.</p>
         <a class="enter" href="#entradas">Abrir los experimentos <span>↓</span></a>
@@ -29,9 +34,11 @@
           <a href="saros/"><span>01</span> Atlas de Saros ↗</a>
           <a href="orbitas/"><span>02</span> Órbitas y tres cuerpos ↗</a>
           <a href="luna/"><span>03</span> La Luna sobre Mallorca ↗</a>
+          <a href="interferometria/"><span>04</span> Construye un interferómetro ↗</a>
         </nav>
       </div>
-      <div class="celestial" aria-hidden="true">
+      <figure class="portrait" id="portrait" hidden><img id="portrait-image" alt="" width="800" height="1000"><figcaption id="portrait-caption"></figcaption></figure>
+      <div class="celestial" id="hero-system" aria-hidden="true">
         <div class="sun"></div>
         <div class="ring ring-one"><i></i></div>
         <div class="ring ring-two"><i></i></div>
@@ -39,6 +46,13 @@
         <span class="star star-a"></span><span class="star star-b"></span><span class="star star-c"></span>
       </div>
     </section>
+
+    <section class="profile-section" id="sobre-mi">
+      <div><p class="section-kicker">QUIÉN ESTÁ DETRÁS</p><h2>Soy <span data-author>Alejandro</span>.</h2><p class="profile-headline" id="profile-headline">Astronomía, matemáticas y código para explorar el cielo.</p></div>
+      <div><p class="profile-bio" id="profile-bio">Este es mi cuaderno de experimentos científicos: un espacio para explorar ideas, poner a prueba la intuición y compartir las preguntas que aparecen por el camino.</p><div class="profile-links" id="profile-links"></div></div>
+    </section>
+
+    <section class="research-section" id="investigacion" hidden><div class="section-title"><p>INVESTIGACIÓN</p><h2>Preguntas que se<br>convierten en trabajo.</h2></div><p id="research-intro"></p><div class="publication-grid" id="publications"></div></section>
 
     <section class="entries" id="entradas">
       <div class="section-title">
@@ -77,7 +91,13 @@
           <b>Explorar la Luna <i>↗</i></b>
         </div>
       </a>
+      <a class="entry interferometry" href="interferometria/">
+        <div class="entry-number">04</div><div class="entry-visual" aria-hidden="true"><div class="fringe-visual"></div><span class="antenna-dot dot-a"></span><span class="antenna-dot dot-b"></span><span class="antenna-dot dot-c"></span></div>
+        <div class="entry-copy"><p>RADIOASTRONOMÍA · SEÑAL · IMAGEN</p><h3>Muchas antenas.<br>Una mirada.</h3><span>Diseña un interferómetro, mueve sus antenas y comprueba cómo cambia la imagen del cielo. Del plano de medidas a una reconstrucción con sus límites a la vista.</span><b>Construir el instrumento <i>↗</i></b></div>
+      </a>
     </section>
+
+    <section class="interviews-section" id="entrevistas" hidden><div class="section-title"><p>ENTREVISTAS Y CHARLAS</p><h2>La ciencia<br>en conversación.</h2></div><div class="interview-grid" id="interview-list"></div></section>
 
     <section class="about" id="acerca">
       <p class="about-label">EL CUADERNO</p>
@@ -86,6 +106,6 @@
     </section>
   </main>
 
-  <footer><span>CUADERNO CELESTE</span><p>Hecho con física, código y curiosidad.</p><a href="#inicio">Volver arriba ↑</a></footer>
+  <footer><span>CUADERNO CELESTE</span><p>Hecho con física, código y curiosidad.</p><a href="privacidad/">Privacidad y estadísticas</a><a href="#inicio">Volver arriba ↑</a></footer>
 </body>
 </html>
